@@ -61,15 +61,19 @@ public class SignUp extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d("SignUp", "createUserWithEmail:onComplete:" + task.isSuccessful());
-                        Intent intent = new Intent(SignUp.this,MainActivity.class);
-                        startActivity(intent);
-                        finish();
+
 
 
                         if (!task.isSuccessful()) {
-                            Toast.makeText(SignUp.this, "SignUp failed. Try Againj",
+                            Toast.makeText(SignUp.this, "SignUp failed. Try Again",
                                     Toast.LENGTH_SHORT).show();
+                            Log.e("Vex-Life",task.getException().toString());
+                        }
+                        else{
+                            Log.d("SignUp", "createUserWithEmail:onComplete:" + task.isSuccessful());
+                            Intent intent = new Intent(SignUp.this,MainActivity.class);
+                            startActivity(intent);
+                            finish();
                         }
 
 

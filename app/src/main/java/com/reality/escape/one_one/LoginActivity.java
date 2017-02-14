@@ -65,15 +65,18 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
-                                    Log.d("TAG", "signInWithEmail:onComplete:" + task.isSuccessful());
-                                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
 
                                     if (!task.isSuccessful()) {
                                         Log.w("TAG", "signInWithEmail:failed", task.getException());
                                         Toast.makeText(LoginActivity.this, "Sign-In Failed",
                                                 Toast.LENGTH_SHORT).show();
+                                    }
+                                    else{
+                                        Log.d("TAG", "signInWithEmail:onComplete:" + task.isSuccessful());
+                                        Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                                        startActivity(intent);
+                                        finish();
+
                                     }
 
                                 }
