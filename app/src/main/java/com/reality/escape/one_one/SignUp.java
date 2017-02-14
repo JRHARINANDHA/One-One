@@ -15,6 +15,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Created by krish on 2/13/2017.
@@ -30,6 +32,7 @@ public class SignUp extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private  ProgressBar progressBar;
     private boolean passwordMatchFlag=false;
+    private FirebaseDatabase database;
     @Override
     protected void onCreate(Bundle saved){
         super.onCreate(saved);
@@ -41,6 +44,7 @@ public class SignUp extends AppCompatActivity {
         progressBar=(ProgressBar)findViewById(R.id.signup_progressbar);
         button=(Button)findViewById(R.id.signup_button);
         mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,6 +74,8 @@ public class SignUp extends AppCompatActivity {
                             Log.e("Vex-Life",task.getException().toString());
                         }
                         else{
+                            DatabaseReference myRef = database.getReference(name.getText().toString());
+                            myRef.child("email").setValue(email.getText().toString());
                             Log.d("SignUp", "createUserWithEmail:onComplete:" + task.isSuccessful());
                             Intent intent = new Intent(SignUp.this,MainActivity.class);
                             startActivity(intent);

@@ -27,6 +27,8 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
@@ -41,6 +43,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private TextView signupText;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseDatabase database;
 
 
     @Override
@@ -53,6 +56,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         loginProgressBar=(ProgressBar)findViewById(R.id.login_progressbar);
         signupText=(TextView)findViewById(R.id.signup_textview);
         mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,6 +180,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                             String name = account.getDisplayName();
                             String email = account.getEmail();
+                            DatabaseReference myRef = database.getReference(name);
+                            myRef.child("email").setValue(email);
 
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 
