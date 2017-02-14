@@ -105,20 +105,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         if(task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this, "Authentication success.",
                                     Toast.LENGTH_SHORT).show();
-                       /*     String firstname_data = account.getDisplayName();
-                            String email_data = account.getEmail();
 
-                            DatabaseReference clientnameref = database.getReference("client").child(firstname_data).child("name");
-                            clientnameref.setValue(firstname_data);
 
-                            DatabaseReference clientmailref = database.getReference("client").child(firstname_data).child("mail");
-                            clientmailref.setValue(email_data);
-*/
                             String name = account.getDisplayName();
                             String email = account.getEmail();
 
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            intent.putExtra()
                             startActivity(intent);
                             finish();
                         }
