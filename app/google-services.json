@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "744057525124-nait5u49ehjjvioeafmrsqen1apba92u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.reality.escape.one_one",
+            "certificate_hash": "5193323F271F4FAC83A64E96ABA9FCA9EF9A7F9C"
+          }
+        },
+        {
           "client_id": "744057525124-r4glm0epdgrb6ihqvmcu2b4ub8vuc9m2.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

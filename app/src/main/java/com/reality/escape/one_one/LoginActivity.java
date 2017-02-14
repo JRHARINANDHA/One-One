@@ -7,6 +7,10 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -30,15 +34,77 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private GoogleApiClient googleApiClient;
     private int RC_SIGN_IN = 100;
     private FirebaseAuth auth;
+    private EditText email;
+    private EditText password;
+    private Button login;
+    private ProgressBar loginProgressBar;
+    private TextView signupText;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        email=(EditText)findViewById(R.id.email);
+        password=(EditText)findViewById(R.id.password);
+        login=(Button)findViewById(R.id.login);
+        loginProgressBar=(ProgressBar)findViewById(R.id.login_progressbar);
+        signupText=(TextView)findViewById(R.id.signup_textview);
+        mAuth = FirebaseAuth.getInstance();
+
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginProgressBar.setVisibility(View.VISIBLE);
+                checkForNull();
+                if(email.getText().toString().length()!=0&&password.getText().toString().length()!=0){
+                    //==================FIrebase Login==================
+                    mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
+                            .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    Log.d("TAG", "signInWithEmail:onComplete:" + task.isSuccessful());
+                                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+
+                                    if (!task.isSuccessful()) {
+                                        Log.w("TAG", "signInWithEmail:failed", task.getException());
+                                        Toast.makeText(LoginActivity.this, "Sign-In Failed",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+
+                                }
+                            });
+                    //==================================================
+                }
+            }
+        });
+
+
+        signupText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (LoginActivity.this,SignUp.class);
+                startActivity(intent);
+            }
+        });
 
         init();
         setListeners();
+    }
+
+    private void checkForNull() {
+        if(email.getText().toString().length()==0){
+            email.setError("Email is mandatory");
+            loginProgressBar.setVisibility(View.INVISIBLE);
+        }
+        if(password.getText().toString().length()==0){
+            password.setError("Password is mandatory");
+            loginProgressBar.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void setListeners() {
@@ -70,14 +136,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .build();
 
         googleSignIn = (SignInButton) findViewById(R.id.sign_in_button);
+        googleSignIn.setSize(SignInButton.SIZE_WIDE);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // progressDialog = ProgressDialog.show(LoginActivity.this,"Please Wait","Loading");
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+
         if (requestCode == RC_SIGN_IN) {
             Log.e("suc","suc1");
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
@@ -88,11 +154,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 firebaseAuthWithGoogle(account);
             } else {
                 // Google Sign In failed, update UI appropriately
-                // ...
                 Log.e("suc","error");
             }
         }
-        // progressDialog.dismiss();
+
     }
 
     private void firebaseAuthWithGoogle(final GoogleSignInAccount account) {
@@ -105,20 +170,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         if(task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this, "Authentication success.",
                                     Toast.LENGTH_SHORT).show();
-                       /*     String firstname_data = account.getDisplayName();
-                            String email_data = account.getEmail();
 
-                            DatabaseReference clientnameref = database.getReference("client").child(firstname_data).child("name");
-                            clientnameref.setValue(firstname_data);
-
-                            DatabaseReference clientmailref = database.getReference("client").child(firstname_data).child("mail");
-                            clientmailref.setValue(email_data);
-*/
                             String name = account.getDisplayName();
                             String email = account.getEmail();
 
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            intent.putExtra()
+
                             startActivity(intent);
                             finish();
                         }
