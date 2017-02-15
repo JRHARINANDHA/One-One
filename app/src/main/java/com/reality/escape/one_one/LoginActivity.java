@@ -184,7 +184,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             myRef.child("email").setValue(email);
 
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-
+                            intent.putExtra("sender",name);
                             startActivity(intent);
                             finish();
                         }

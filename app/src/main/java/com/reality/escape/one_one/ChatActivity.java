@@ -4,24 +4,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.reality.escape.one_one.Models.MessageModel;
-import com.firebase.ui.database.FirebaseListAdapter;
 
 public class ChatActivity extends AppCompatActivity {
     private FloatingActionButton send;
     private EditText input;
     private ListView listOfMessages;
     private FirebaseListAdapter<MessageModel> adapter;
-    private Toolbar toolbar;
+    private String title,sender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +34,8 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 FirebaseDatabase.getInstance()
-                        .getReference()
+                        .getReference(title)
+                        .child(sender)
                         .push()
                         .setValue(new MessageModel(input.getText().toString(), FirebaseAuth.getInstance()
                                 .getCurrentUser()
@@ -49,7 +49,7 @@ public class ChatActivity extends AppCompatActivity {
     }
     private void showMessage() {
         adapter = new FirebaseListAdapter<MessageModel>(this, MessageModel.class,
-                R.layout.message, FirebaseDatabase.getInstance().getReference()) {
+                R.layout.message, FirebaseDatabase.getInstance().getReference(title).child(sender)) {
             @Override
             protected void populateView(View v, MessageModel model, int position) {
                 // Get references to the views of message.xml
@@ -76,10 +76,11 @@ public class ChatActivity extends AppCompatActivity {
         send = (FloatingActionButton) findViewById(R.id.send);
 
         Intent i = getIntent();
-        String title = i.getExtras().getString("title");
+        title = i.getExtras().getString("title");
+        sender = i.getExtras().getString("sender");
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+       // toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(title);
     }
 }

@@ -33,6 +33,7 @@ public class SignUp extends AppCompatActivity {
     private  ProgressBar progressBar;
     private boolean passwordMatchFlag=false;
     private FirebaseDatabase database;
+    private String contactName;
     @Override
     protected void onCreate(Bundle saved){
         super.onCreate(saved);
@@ -74,10 +75,12 @@ public class SignUp extends AppCompatActivity {
                             Log.e("Vex-Life",task.getException().toString());
                         }
                         else{
+                            contactName = name.getText().toString();
                             DatabaseReference myRef = database.getReference(name.getText().toString());
                             myRef.child("email").setValue(email.getText().toString());
                             Log.d("SignUp", "createUserWithEmail:onComplete:" + task.isSuccessful());
                             Intent intent = new Intent(SignUp.this,MainActivity.class);
+                            intent.putExtra("sender",contactName);
                             startActivity(intent);
                             finish();
                         }

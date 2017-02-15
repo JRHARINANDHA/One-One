@@ -9,15 +9,19 @@ import android.widget.TextView;
 
 import com.reality.escape.one_one.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolder>{
-    private final String name;
+    //private final String name;
     private final String preview;
     private static ClickListener clickListener;
+    private List<String> contacts = new ArrayList<>();
 
     Context context;
 
-    public ContactAdapter(Context context) {
-        name = "Test User";
+    public ContactAdapter(Context context,List<String> contacts) {
+        this.contacts = contacts;
         preview = "Test Data";
 
     }
@@ -31,7 +35,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
        // holder.dp.setImageDrawable(name);
-        holder.name.setText(name);
+        holder.name.setText(contacts.get(position));
         holder.description.setText(preview);
     }
 
