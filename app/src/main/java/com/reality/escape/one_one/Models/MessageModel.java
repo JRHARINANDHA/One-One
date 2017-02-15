@@ -11,11 +11,13 @@ public class MessageModel{
     private String messageUser;
     private String messageText;
     private long messageTime;
+    private String messageType;
 
-    public MessageModel(String messageText, String messageUser) {
+    public MessageModel(String messageText, String messageUser,String messageType) {
         this.messageTime = new Date().getTime();
         this.messageText = messageText;
         this.messageUser = messageUser;
+        this.messageType = messageType;
     }
 
     public MessageModel() {
@@ -44,6 +46,14 @@ public class MessageModel{
 
     public void setMessageText(String messageText) {
         this.messageText = messageText;
+    }
+
+    public String getMessageType() {
+        return messageType;
+    }
+
+    public void setMessageType(String messageType) {
+        this.messageType = messageType;
     }
 }
 

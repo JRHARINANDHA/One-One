@@ -50,12 +50,13 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:layout_above="@id/send"
             android:dividerHeight="16dp"
             android:divider="@android:color/transparent"
             android:id="@+id/list_of_messages"
-            android:layout_marginBottom="16dp"/>
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_above="@+id/send"/>
+
+
     </RelativeLayout>
 </RelativeLayout>

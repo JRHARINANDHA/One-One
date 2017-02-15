@@ -29,6 +29,8 @@ public class ChatActivity extends AppCompatActivity {
 
         init();
         showMessage();
+        //showReceivedMessage();
+
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,8 +41,18 @@ public class ChatActivity extends AppCompatActivity {
                         .push()
                         .setValue(new MessageModel(input.getText().toString(), FirebaseAuth.getInstance()
                                 .getCurrentUser()
-                                .getDisplayName())
+                                .getDisplayName(),"received")
                         );
+
+                FirebaseDatabase.getInstance()
+                        .getReference(sender)
+                        .child(title)
+                        .push()
+                        .setValue(new MessageModel(input.getText().toString(), FirebaseAuth.getInstance()
+                                .getCurrentUser()
+                                .getDisplayName(),"sent")
+                        );
+
 
                 input.setText("");
             }
@@ -61,8 +73,19 @@ public class ChatActivity extends AppCompatActivity {
                 messageText.setText(model.getMessageText());
                 messageUser.setText(model.getMessageUser());
 
+                if(model.getMessageType().equalsIgnoreCase("sent")){
+                    messageText.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
+                    messageUser.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
+                    messageTime.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+                }
+                else{
+                    messageText.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+                    messageUser.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+                    messageTime.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
+                }
+
                 // Format the date before showing it
-                messageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)",
+                messageTime.setText(DateFormat.format("HH:mm",
                         model.getMessageTime()));
             }
         };

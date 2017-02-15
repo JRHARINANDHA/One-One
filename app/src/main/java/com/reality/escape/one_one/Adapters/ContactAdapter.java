@@ -41,7 +41,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return 3;
+        return contacts.size();
     }
 
 

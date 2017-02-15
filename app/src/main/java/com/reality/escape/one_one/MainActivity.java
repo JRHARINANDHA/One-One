@@ -31,43 +31,15 @@ public class MainActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        loadContacts();
+
 
         init();
+        loadContacts();
+
 
     }
 
-    private void loadContacts() {
-        DatabaseReference reference = database.getReference();
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.e("Count",""+dataSnapshot.getChildrenCount());
-                for(DataSnapshot postSnapshot:dataSnapshot.getChildren()){
-                   Log.e("Name",""+postSnapshot.getKey());
-                    contacts.add(postSnapshot.getKey());
-
-                    // Map<String, Object> td = (HashMap<String,Object>) dataSnapshot.getValue();
-                   // List<Objects> contact = td.values();
-                    Log.e("size",""+contacts.size());
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e("Error",""+databaseError.getMessage());
-            }
-        });
-    }
-
-    private void init() {
-
-        database = FirebaseDatabase.getInstance();
-
-        Intent intent = getIntent();
-        sender = intent.getExtras().getString("sender");
-
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+    private void loadRecycler() {
         ContactAdapter adapter = new ContactAdapter(getApplicationContext(),contacts);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
@@ -91,6 +63,43 @@ public class MainActivity extends AppCompatActivity  {
 
             }
         });
+    }
+
+    private void loadContacts() {
+        database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference();
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("Count",""+dataSnapshot.getChildrenCount());
+                for(DataSnapshot postSnapshot:dataSnapshot.getChildren()){
+                   Log.e("Name",""+postSnapshot.getKey());
+
+                    contacts.add(postSnapshot.getKey());
+
+                    // Map<String, Object> td = (HashMap<String,Object>) dataSnapshot.getValue();
+                   // List<Objects> contact = td.values();
+                    Log.e("size",""+contacts.size());
+                }
+                loadRecycler();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("Error",""+databaseError.getMessage());
+            }
+        });
+    }
+
+    private void init() {
+
+
+
+        Intent intent = getIntent();
+        sender = intent.getExtras().getString("sender");
+
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+
 
     }
 
