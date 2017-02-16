@@ -26,6 +26,10 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
+        init();
+        showMessage();
+
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,8 +56,7 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        init();
-        showMessage();
+
         //showReceivedMessage();
     }
     private void showMessage() {
@@ -97,7 +100,8 @@ public class ChatActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         title = i.getExtras().getString("title");
-        sender = i.getExtras().getString("sender");
+        sender = i.getExtras().getString("name");
+
 
        // toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);

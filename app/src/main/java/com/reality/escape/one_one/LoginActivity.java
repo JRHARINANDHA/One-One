@@ -27,8 +27,11 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
@@ -44,17 +47,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseDatabase database;
+    private String name;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        //==============================================
-        Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-        intent.putExtra("sender","Krishna prasad");
-        startActivity(intent);
-        //==============================================
+
         email=(EditText)findViewById(R.id.email);
         password=(EditText)findViewById(R.id.password);
         login=(Button)findViewById(R.id.login);
@@ -81,10 +81,34 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                                 Toast.LENGTH_SHORT).show();
                                     }
                                     else{
+                                        DatabaseReference reference = database.getReference();
+                                        reference.addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
+                                                    for(DataSnapshot subChildSnapshot:childSnapshot.getChildren()){
+                                                        if(subChildSnapshot.getValue().equals(email.getText().toString())){
+                                                            name = childSnapshot.getKey();
+
+                                                            Log.d("name",name);
+                                                            Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                                                            intent.putExtra("name",name);
+                                                            startActivity(intent);
+                                                            finish();
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+
+                                            }
+                                        });
+
+
                                         Log.d("TAG", "signInWithEmail:onComplete:" + task.isSuccessful());
-                                        Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                                        startActivity(intent);
-                                        finish();
+
 
                                     }
 
@@ -189,10 +213,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             DatabaseReference myRef = database.getReference(name);
                             myRef.child("email").setValue(email);
 
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            intent.putExtra("sender",name);
-                            startActivity(intent);
-                            finish();
+
+                                Intent intent = new Intent(LoginActivity.this, UploadPicture.class);
+                                intent.putExtra("name", name);
+                                startActivity(intent);
+                                finish();
+
                         }
 
                         else if (!task.isSuccessful()) {

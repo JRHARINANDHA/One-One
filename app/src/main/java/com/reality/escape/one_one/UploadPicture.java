@@ -129,7 +129,7 @@ public class UploadPicture extends AppCompatActivity {
                         myRef.child("profilepic").setValue(DOWNLOAD_URL);
                         Intent intent=new Intent(UploadPicture.this,MainActivity.class);
                         intent.putExtra("download_link",DOWNLOAD_URL);
-                        intent.putExtra("sender",profilePicId);
+                        intent.putExtra("name",profilePicId);
                         startActivity(intent);
 
                     }
