@@ -51,7 +51,6 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-
         //showReceivedMessage();
     }
     private void showMessage() {

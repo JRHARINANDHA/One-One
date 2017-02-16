@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,9 +15,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
-    public String downloadUrl;
+    public String name;
     private File localFile;
     private RecyclerView recyclerView;
     private String sender;
@@ -47,6 +50,9 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     private List<Bitmap> profilepic = new ArrayList<>();
     private StorageReference mStorageRef;
     int i=0,count=0;
+    private ImageView imageView;
+    private TextView textView;
+    private View header;
 
 
 
@@ -55,6 +61,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navdrawer);
         mStorageRef = FirebaseStorage.getInstance().getReference();
+        name=getIntent().getStringExtra("name");
+        Log.e("Success",name);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -67,9 +75,44 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        //==================================================================
 
-       // downloadUrl=getIntent().getStringExtra("download_link");
-        //Log.e("Success",downloadUrl);
+        header = navigationView.getHeaderView(0);
+
+        textView=(TextView)header.findViewById(R.id.name_navdrawer);
+        textView.setText(name);
+        imageView = (ImageView)header.findViewById(R.id.profilepic_navdrawer);
+        imageView.setImageResource(R.mipmap.default_pic);
+        StorageReference riversRef = mStorageRef.child(name+".jpg");
+        try {
+            localFile = File.createTempFile("images", "jpg");
+            i++;
+        } catch (IOException e) {
+            Log.e("Error opening file","sorry");
+            e.printStackTrace();
+        }
+
+        riversRef.getFile(localFile)
+                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        // Successfully downloaded data to local file
+                        Log.e(localFile.getAbsolutePath().toString(),String.valueOf(i));
+                        Bitmap bitMap=BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                        imageView.setImageBitmap(bitMap);
+
+
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.e("Failed","DownloadFailed");
+            }
+        });
+        //==================================================================
+
+
 
 
         init();
@@ -116,19 +159,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+        if (id == R.id.logout) {
 
         }
+
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
