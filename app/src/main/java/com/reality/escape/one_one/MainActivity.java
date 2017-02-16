@@ -181,9 +181,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                                         Log.d("success",title);
                                         Toast.makeText(getApplicationContext(),title,Toast.LENGTH_SHORT);
                                         Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+
                                         intent.putExtra("title", title);
                                         intent.putExtra("name",sender);
                                         startActivity(intent);
+
 
 
                                     }

@@ -11,7 +11,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseListAdapter;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.reality.escape.one_one.Models.MessageModel;
 
@@ -37,18 +36,14 @@ public class ChatActivity extends AppCompatActivity {
                         .getReference(title)
                         .child(sender)
                         .push()
-                        .setValue(new MessageModel(input.getText().toString(), FirebaseAuth.getInstance()
-                                .getCurrentUser()
-                                .getDisplayName(),"received")
+                        .setValue(new MessageModel(input.getText().toString(), sender ,"received")
                         );
 
                 FirebaseDatabase.getInstance()
                         .getReference(sender)
                         .child(title)
                         .push()
-                        .setValue(new MessageModel(input.getText().toString(), FirebaseAuth.getInstance()
-                                .getCurrentUser()
-                                .getDisplayName(),"sent")
+                        .setValue(new MessageModel(input.getText().toString(), title,"sent")
                         );
 
 
@@ -71,17 +66,21 @@ public class ChatActivity extends AppCompatActivity {
 
                 // Set their text
                 messageText.setText(model.getMessageText());
-                messageUser.setText(model.getMessageUser());
+
 
                 if(model.getMessageType().equalsIgnoreCase("sent")){
-                    messageText.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
-                    messageUser.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
-                    messageTime.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
-                }
-                else{
+                    messageUser.setText(title);
                     messageText.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
                     messageUser.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
                     messageTime.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
+
+                }
+                else{
+                    messageUser.setText(sender);
+                    messageText.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
+                    messageUser.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
+                    messageTime.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+
                 }
 
                 // Format the date before showing it

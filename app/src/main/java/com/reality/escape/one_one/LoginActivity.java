@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                     }
                                     else{
                                         DatabaseReference reference = database.getReference();
-                                        reference.addValueEventListener(new ValueEventListener() {
+                                        reference.addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot) {
                                                 for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
