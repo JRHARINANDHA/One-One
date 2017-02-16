@@ -50,6 +50,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        //==============================================
+        Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+        intent.putExtra("sender","Krishna prasad");
+        startActivity(intent);
+        //==============================================
         email=(EditText)findViewById(R.id.email);
         password=(EditText)findViewById(R.id.password);
         login=(Button)findViewById(R.id.login);
@@ -96,6 +101,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             public void onClick(View v) {
                 Intent intent = new Intent (LoginActivity.this,SignUp.class);
                 startActivity(intent);
+
             }
         });
 

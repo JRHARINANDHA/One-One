@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.reality.escape.one_one.Models.MessageModel;
 
@@ -25,6 +26,31 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseDatabase.getInstance()
+                        .getReference(title)
+                        .child(sender)
+                        .push()
+                        .setValue(new MessageModel(input.getText().toString(), FirebaseAuth.getInstance()
+                                .getCurrentUser()
+                                .getDisplayName(),"received")
+                        );
+
+                FirebaseDatabase.getInstance()
+                        .getReference(sender)
+                        .child(title)
+                        .push()
+                        .setValue(new MessageModel(input.getText().toString(), FirebaseAuth.getInstance()
+                                .getCurrentUser()
+                                .getDisplayName(),"sent")
+                        );
+
+
+                input.setText("");
+            }
+        });
 
         init();
         showMessage();

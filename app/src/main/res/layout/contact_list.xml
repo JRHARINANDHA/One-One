@@ -12,8 +12,8 @@
 
     <ImageView
         android:id="@+id/dp"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:scaleType="centerCrop"
         tools:src="@drawable/avatar" />
 
@@ -25,7 +25,7 @@
         android:layout_marginLeft="20dp"
         tools:text="Contact Name"
         android:textAppearance="?attr/textAppearanceListItem"
-        android:textSize="16sp" />
+        android:textSize="19sp" />
 
     <TextView
         android:id="@+id/list_desc"
@@ -34,6 +34,7 @@
         android:layout_below="@+id/contact_name"
         android:layout_marginLeft="20dp"
         android:layout_toRightOf="@+id/dp"
+
         android:textColor="@color/medium_grey"
         android:ellipsize="end"
         android:singleLine="true"

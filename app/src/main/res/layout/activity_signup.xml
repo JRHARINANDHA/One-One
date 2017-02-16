@@ -1,24 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:layout_marginRight="20dp">
     <RelativeLayout
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="50dp"
         android:layout_height="match_parent">
-        <TextView
-            android:id="@+id/signup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sign-Up"
-            android:textSize="32dp"
-            android:fontFamily="sans-serif-smallcaps" />
+
+
+
         <EditText
             android:id="@+id/signup_name"
             android:layout_marginTop="20dp"
             android:hint="Name"
-            android:layout_below="@+id/signup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <EditText
@@ -43,11 +39,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <Button
-            android:id="@+id/signup_button"
+            android:id="@+id/upload_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Sign UP"
+            android:text="Upload Profile Picture"
             android:layout_below="@+id/signup_reenter_password"
             android:textColor="#ffffff"
             android:backgroundTint="@color/colorPrimary"/>
@@ -58,7 +54,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:visibility="invisible"
-            android:layout_below="@+id/signup_button"
+            android:layout_below="@+id/upload_button"
             android:id="@+id/signup_progressbar" />
 
 
